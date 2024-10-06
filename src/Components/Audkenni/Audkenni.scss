@@ -1,0 +1,10 @@
+.btn-custom {
+    background-color: #100033;
+    color: white;
+    margin-top: 10px;
+
+    &:hover {
+        background-color: lighten($color: #100033, $amount: 10);
+        color: white;
+    }
+}

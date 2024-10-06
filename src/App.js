@@ -1,18 +1,17 @@
-import Audkenni from "./Audkenni";
+import Audkenni from "./Components/Audkenni/Audkenni";
+import Footer from "./Components/Footer/Footer";
+import Header from "./Components/Header/Header";
 
 function App() {
   return (
     <>
       <div
         className="App"
-        style={{
-          textAlign: "center",
-          padding: "50px",
-          backgroundColor: "blue",
-          height: "100vh",
-        }}
+        style={{ minheight: "100vh", display: "flex", flexDirection: "column" }}
       >
+        <Header />
         <Audkenni />
+        <Footer />
       </div>
       ;
     </>

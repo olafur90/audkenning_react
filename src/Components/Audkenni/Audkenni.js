@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Image } from "react-bootstrap";
+import "./Audkenni.scss";
+import { Button } from "react-bootstrap";
 
 export default function Audkenni() {
   const [userAuthenticated, setUserAuthenticated] = useState(false);
@@ -22,20 +23,20 @@ export default function Audkenni() {
 
   return (
     <>
-      <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShtbOdpffz_X9kFdtNynlcyItAwvaCR3sB5g&s" />
       <div
         style={{
           textAlign: "center",
-          marginTop: 200,
-          border: "1px solid black",
-          padding: 10,
-          backgroundColor: "purple",
+          display: "flex",
+          justifyContent: "center",
+          height: "80vh"
         }}
       >
-        <label>Kennitala/Símanúmer:</label>
-        <input type="text" style={{ marginLeft: 10, marginRight: 10 }} />
-        <button onClick={fetchUser}>Submit</button>
-        <h1>{userAuthenticated && "Samþykkt"}</h1>
+        <div style={{ border: "1px solid black", display: "flex", justifyContent: "center", padding: 100, margin: 0, marginTop: 50, alignItems: "center", flexDirection: "column", width: 300 }}>
+          <label>Kennitala/Símanúmer:</label>
+          <input type="text" style={{ marginLeft: 10, marginRight: 10 }} />
+          <Button onClick={fetchUser} variant="custom" className="btn-custom">Senda</Button>
+          <h1>{userAuthenticated && "Samþykkt"}</h1>
+        </div>
       </div>
       {loading && (
         <>
@@ -44,7 +45,6 @@ export default function Audkenni() {
           </Spinner>
         </>
       )}
-      <Image src="https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/474387pea/anh-meme-tien-ba-dao_093839638.jpg" />
     </>
   );
 }
