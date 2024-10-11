@@ -6,6 +6,7 @@ import { Button } from "react-bootstrap";
 
 export default function Audkenni() {
   const [userAuthenticated, setUserAuthenticated] = useState(false);
+  const [lastUser, setLastUser] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function fetchUser() {
@@ -16,8 +17,8 @@ export default function Audkenni() {
       {
         method: "POST",
       }
-    );
-    setUserAuthenticated((await res.status) === 200);
+    ).then((resp) => console.log(resp.json()));
+    //setUserAuthenticated((await res.status) === 200);
     setLoading(false);
   }
 
@@ -28,14 +29,28 @@ export default function Audkenni() {
           textAlign: "center",
           display: "flex",
           justifyContent: "center",
-          height: "80vh"
+          height: "80vh",
         }}
       >
-        <div style={{ border: "1px solid black", display: "flex", justifyContent: "center", padding: 100, margin: 0, marginTop: 50, alignItems: "center", flexDirection: "column", width: 300 }}>
+        <div
+          style={{
+            border: "1px solid black",
+            display: "flex",
+            justifyContent: "center",
+            padding: 100,
+            margin: 0,
+            marginTop: 50,
+            alignItems: "center",
+            flexDirection: "column",
+            width: 300,
+          }}
+        >
           <label>Kennitala/Símanúmer:</label>
           <input type="text" style={{ marginLeft: 10, marginRight: 10 }} />
-          <Button onClick={fetchUser} variant="custom" className="btn-custom">Senda</Button>
-          <h1>{userAuthenticated && "Samþykkt"}</h1>
+          <Button onClick={fetchUser} variant="custom" className="btn-custom">
+            Senda
+          </Button>
+          <h1>{userAuthenticated && `Samþykkt notandi ${lastUser}`}</h1>
         </div>
       </div>
       {loading && (
