@@ -8,11 +8,11 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
+    "convert-csv-to-json": "^2.49.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
-    "sass": "^1.79.4",
     "scss": "^0.2.4",
     "web-vitals": "^2.1.4"
   },
@@ -39,5 +39,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "sass": "^1.79.5",
+    "sass-loader": "^16.0.2"
   }
 }

@@ -1,10 +1,41 @@
 .btn-custom {
-    background-color: #100033;
-    color: white;
+    background-color: white;
+    color: "#100033";
     margin-top: 10px;
 
     &:hover {
         background-color: lighten($color: #100033, $amount: 10);
         color: white;
     }
+}
+
+.mainSection {
+    align-items: center;
+    display: flex;
+    height: 80vh;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.audkenni {
+    align-items: center;
+    background-color: #100033;
+    border: 3px solid black;
+    display: flex;
+    flex-direction: column;
+    height: 50vh;
+    justify-content: center;
+    margin: 0;
+    padding: 100px;
+    width: 300px;
+}
+
+.idLabel {
+    color: white; 
+    font-weight: bold; 
+    margin-bottom: 10px;
+}
+
+.idInput {
+    margin: 0 10px;
 }

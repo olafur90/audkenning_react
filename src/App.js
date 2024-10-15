@@ -1,6 +1,7 @@
 import Audkenni from "./Components/Audkenni/Audkenni";
 import Footer from "./Components/Footer/Footer";
 import Header from "./Components/Header/Header";
+import Simaskra from "./Components/Simaskra/Simaskra";
 
 function App() {
   return (

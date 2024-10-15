@@ -1,65 +1,113 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Audkenni.scss";
-import { Button } from "react-bootstrap";
+import { Button, Toast } from "react-bootstrap";
+import RecentAuths from "../RecentAuths/RecentAuths";
+import Simaskra from "../Simaskra/Simaskra";
+import isValid from "../../Util/Validators";
 
 export default function Audkenni() {
   const [userAuthenticated, setUserAuthenticated] = useState(false);
   const [lastUser, setLastUser] = useState("");
   const [loading, setLoading] = useState(false);
+  const [timer, setTimer] = useState(40);
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [input, setInput] = useState("");
+  const [errors, setErrors] = useState([]);
+  const [isValidInput, setIsValidInput] = useState(false);
+
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  useEffect(() => {
+    let interval;
+    if (isTimerActive && timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    }
+    if (timer === 0) {
+      clearInterval(interval); // Clear the timer when it reaches 0
+    }
+    return () => clearInterval(interval);
+  }, [isTimerActive, timer]);
+
+  useEffect(() => {
+    setIsValidInput(isValid(input));
+  }, [input]);
 
   async function fetchUser() {
-    setLoading(true);
+    if (!isValidInput) {
+      setErrors([...errors, "Invalid input"]);
+      return;
+    }
 
-    const res = await fetch(
-      "http://localhost:5177/Home/AuthenticateUser?userIdentifier=1505902649",
+    setLoading(true);
+    setIsTimerActive(true);
+
+    await fetch(
+      `${apiUrl}/AuthenticateUser?userIdentifier=${input.replace("-", "")}`,
       {
         method: "POST",
       }
-    ).then((resp) => console.log(resp.json()));
-    //setUserAuthenticated((await res.status) === 200);
+    ).then((resp) => {
+      setUserAuthenticated(resp.status === 200);
+    });
+
+    resetInput();
+  }
+
+  function resetInput() {
+    setIsTimerActive(false);
     setLoading(false);
+    setTimer(40);
+    setInput("");
+    setErrors([]);
+    setIsValidInput(false);
+
+    setTimeout(() => {
+      setLastUser("");
+      setUserAuthenticated(false);
+    }, 3000);
   }
 
   return (
     <>
-      <div
-        style={{
-          textAlign: "center",
-          display: "flex",
-          justifyContent: "center",
-          height: "80vh",
-        }}
-      >
-        <div
-          style={{
-            border: "1px solid black",
-            display: "flex",
-            justifyContent: "center",
-            padding: 100,
-            margin: 0,
-            marginTop: 50,
-            alignItems: "center",
-            flexDirection: "column",
-            width: 300,
-          }}
-        >
-          <label>Kennitala/Símanúmer:</label>
-          <input type="text" style={{ marginLeft: 10, marginRight: 10 }} />
+      <section className="mainSection">
+        <Simaskra />
+
+        <div className="audkenni">
+          {isTimerActive && <h1 style={{ color: "white" }}>{timer}</h1>}
+          <label className="idLabel">Kennitala/Símanúmer:</label>
+          <input
+            onChange={(e) => setInput(e.target.value)}
+            type="text"
+            className="idInput"
+            value={input}
+          />
+
           <Button onClick={fetchUser} variant="custom" className="btn-custom">
             Senda
           </Button>
-          <h1>{userAuthenticated && `Samþykkt notandi ${lastUser}`}</h1>
+
+          <h1 style={{ color: "red" }}>
+            {!isValidInput && errors.length > 0 && "Villa!"}
+          </h1>
+
+          <h1 style={{ color: "white" }}>
+            {userAuthenticated && `Notandi ${lastUser} skráður`}
+          </h1>
+
+          {loading && (
+            <>
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </>
+          )}
         </div>
-      </div>
-      {loading && (
-        <>
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        </>
-      )}
+        <RecentAuths />
+      </section>
     </>
   );
 }
