@@ -1,15 +1,11 @@
 import Audkenni from "./Components/Audkenni/Audkenni";
 import Footer from "./Components/Footer/Footer";
 import Header from "./Components/Header/Header";
-import Simaskra from "./Components/Simaskra/Simaskra";
 
 function App() {
   return (
     <>
-      <div
-        className="App"
-        style={{ minheight: "100vh", display: "flex", flexDirection: "column" }}
-      >
+      <div className="App">
         <Header />
         <Audkenni />
         <Footer />

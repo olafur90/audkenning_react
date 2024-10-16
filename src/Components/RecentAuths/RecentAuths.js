@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./RecentAuths.scss";
 
-export default function RecentAuths() {
+export default function RecentAuths({ shouldRefresh }) {
   const [recentAuths, setRecentAuths] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -9,7 +9,7 @@ export default function RecentAuths() {
     fetch(`${apiUrl}/GetRecentAuthentications`)
       .then((res) => res.json())
       .then((data) => setRecentAuths(data));
-  }, []);
+  }, [shouldRefresh]);
 
   return (
     <div

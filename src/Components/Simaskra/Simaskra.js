@@ -1,6 +1,7 @@
+import "./Simaskra.scss";
 import { useEffect, useState } from "react";
 
-export default function Simaskra() {
+export default function Simaskra({ onNumberSelect }) {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function Simaskra() {
           return user;
         });
 
-        // Process users: Remove "RB" prefix, etc.
+        // Process users: Remove "RB" prefix
         users.forEach((user) => {
           if (user.Name.startsWith("RB")) {
             user.Name = user.Name.slice(3);
@@ -44,28 +45,20 @@ export default function Simaskra() {
       });
   }, []);
 
+  const handleNumberClick = (number) => {
+    onNumberSelect(number);
+  };
+
   return (
-    <div
-      style={{
-        maxHeight: "70vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignSelf: "center",
-      }}
-    >
+    <div className="simaskra-container">
       <h1>Símaskrá</h1>
-      <ul
-        style={{
-          listStyleType: "none",
-          overflow: "auto",
-          textAlign: "left",
-          paddingTop: "5px",
-        }}
-      >
+      <ul className="simaskra-list">
         {users.map((user, index) => (
           <li key={user.id || index}>
-            {user.Name} - {user.telephonenumber}
+            {user.Name} -{" "}
+            <span onClick={() => handleNumberClick(user.telephonenumber)}>
+              {user.telephonenumber}
+            </span>
           </li>
         ))}
       </ul>

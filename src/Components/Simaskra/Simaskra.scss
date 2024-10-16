@@ -1,0 +1,21 @@
+.simaskra-container {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 70vh;
+    overflow: auto;
+    width: 30%;
+}
+
+.simaskra-container > .simaskra-list {
+    list-style-type: none;
+    overflow: auto;
+    padding-top: 5px;
+    text-align: left;
+
+    & li span {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+}
