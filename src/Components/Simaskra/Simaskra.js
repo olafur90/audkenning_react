@@ -1,8 +1,11 @@
+import { Col, Container, Row } from "react-bootstrap";
 import "./Simaskra.scss";
 import { useEffect, useState } from "react";
 
 export default function Simaskra({ onNumberSelect }) {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
     fetch("simaskra.csv")
@@ -25,18 +28,13 @@ export default function Simaskra({ onNumberSelect }) {
               value = value.slice(0, 3) + "-" + value.slice(3);
             }
 
+            if (headers[i] === "Name" && value.startsWith("RB ")) {
+              value = value.replace("RB ", "");
+            }
+
             user[headers[i]] = value;
           }
           return user;
-        });
-
-        // Process users: Remove "RB" prefix
-        users.forEach((user) => {
-          if (user.Name.startsWith("RB")) {
-            user.Name = user.Name.slice(3);
-          } else {
-            users.splice(users.indexOf(user), 1);
-          }
         });
 
         // Sort by name
@@ -45,10 +43,41 @@ export default function Simaskra({ onNumberSelect }) {
       });
   }, []);
 
+  // Grabs the clicked number
   const handleNumberClick = (number) => {
     onNumberSelect(number);
   };
 
+  const handleSearch = (searchString) => {
+    setSearchString(searchString);
+    const filtered = users.filter((user) =>
+      user.Name.toLowerCase().includes(searchString.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+    console.log(filteredUsers);
+  };
+
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <PhoneSearch onHandleSearch={handleSearch} />
+        </Col>
+        <Col>
+          <SimaskraList users={users} handleNumberClick={handleNumberClick} />
+        </Col>
+      </Row>
+    </Container>
+  );
+}
+
+/**
+ * @description A list of users that are in the simaskra
+ * @param {*} users the list of users
+ * @param {*} handleNumberClick a function that is called when a number is clicked 
+ * @returns a list of users that are in the simaskra
+ */
+function SimaskraList({ users, handleNumberClick }) {
   return (
     <div className="simaskra-container">
       <h1>Símaskrá</h1>
@@ -62,6 +91,19 @@ export default function Simaskra({ onNumberSelect }) {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function PhoneSearch({ onHandleSearch }) {
+  return (
+    <div>
+      <h2>Leita að notanda</h2>
+      <input
+        type="text"
+        placeholder="Leita að notanda"
+        onChange={(e) => onHandleSearch(e.target.value)}
+      />
     </div>
   );
 }

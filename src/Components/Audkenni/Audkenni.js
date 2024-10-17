@@ -1,12 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Audkenni.scss";
-
-import { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import Spinner from "react-bootstrap/Spinner";
 import RecentAuths from "../RecentAuths/RecentAuths";
 import Simaskra from "../Simaskra/Simaskra";
 import isValid from "../../Util/Validators";
+import { useEffect, useState } from "react";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
 
 export default function Audkenni() {
   // States
@@ -97,41 +96,57 @@ export default function Audkenni() {
 
   return (
     <>
-      <section className="mainSection">
-        <Simaskra onNumberSelect={handleNumberSelect} />
+      <Container className="mainSection">
+        <Row>
+          <Col>
+                <Simaskra onNumberSelect={handleNumberSelect} />
+          </Col>
 
-        <div className="audkenni">
-          {isTimerActive && <h1 style={{ color: "white" }}>{timer}</h1>}
-          <label className="idLabel">Kennitala/Símanúmer:</label>
-          <input
-            onChange={(e) => setInput(e.target.value)}
-            type="text"
-            className="idInput"
-            value={selectedNumber || input}
-          />
+          <Col>
+            <div className="audkenni">
+              {isTimerActive && <h1 style={{ color: "white" }}>{timer}</h1>}
+              <label className="idLabel">Kennitala/Símanúmer:</label>
+              <input
+                onChange={(e) => setInput(e.target.value)}
+                type="text"
+                className="idInput"
+                value={selectedNumber || input}
+              />
 
-          <Button onClick={fetchUser} variant="custom" className="btn-custom">
-            Senda
-          </Button>
+              <Button onClick={fetchUser} variant="custom" className="btn-custom">
+                Senda
+              </Button>
 
-          <h1 style={{ color: "red" }}>
-            {!isValidInput && errors.length > 0 && "Villa!"}
-          </h1>
+              <h1 style={{ color: "red" }}>
+                {!isValidInput && errors.length > 0 && "Villa!"}
+              </h1>
 
-          <h1 style={{ color: "white" }}>
-            {userAuthenticated && `Notandi ${lastUser} skráður`}
-          </h1>
+              <h1 style={{ color: "white" }}>
+                {userAuthenticated && `Notandi ${lastUser} skráður`}
+              </h1>
 
-          {loading && (
-            <>
-              <Spinner animation="border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
-            </>
-          )}
-        </div>
-        <RecentAuths shouldRefresh={shouldRefresh} />
-      </section>
+              {loading && (
+                <>
+                  <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                </>
+              )}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <h2>Tengiliðir:</h2>
+              <a href="https://www.arion.is" target="_blank" rel="noreferrer">Arion</a>
+              <a href="https://audkenni.is" target="_blank" rel="noreferrer">Auðkenni</a>
+              <a href="https://islandsbanki.is" target="_blank" rel="noreferrer">Íslandsbanki</a>
+              <a href="https://landsbankinn.is" target="_blank" rel="noreferrer">Landsbanki</a>
+              <a href="https://kvika.is" target="_blank" rel="noreferrer">Kvika</a>
+            </div>
+          </Col>
+          <Col>
+            <RecentAuths shouldRefresh={shouldRefresh} />
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 }
